@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: read
+  models: read
   pages: write
   id-token: write
 
@@ -20,6 +21,11 @@ jobs:
       name: github-pages
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: cache
+          key: summaries-${{ github.run_id }}
+          restore-keys: summaries-
       - run: python generate.py
         env:
           GH_TOKEN: ${{ github.token }}
